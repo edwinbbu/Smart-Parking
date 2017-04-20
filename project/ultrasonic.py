@@ -4,6 +4,7 @@ import time
 import requests
 
 #GPIO Mode (BOARD / BCM)
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
 #set GPIO Pins
@@ -13,13 +14,15 @@ GPIO_ECHO = 24
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
-
+GPIO.setup(17,GPIO.OUT)
+GPIO.setup(27,GPIO.OUT)
+flag=-1;
 def distance():
 	# set Trigger to HIGH
 	GPIO.output(GPIO_TRIGGER, True)
 
 	# set Trigger after 0.01ms to LOW
-	time.sleep(3)
+	time.sleep(1)
 	GPIO.output(GPIO_TRIGGER, False)
 
 	StartTime = time.time()
@@ -45,20 +48,27 @@ if __name__ == '__main__':
 	try:
 		while True:
 			dist = distance()
-			print ("Measured Distance = %.1f cm" % dist)
-			if dist>50:
-				print("Parking slot is vacant");
-				payload={'slotid':'A1','status':0,'vechileno':'KL08A3454'}
-				r=requests.post('http://rentmycar16.esy.es/parkingslot.php',params=payload)
+			#print ("Measured Distance = %.1f cm" % dist)
+			if dist>15:
+				#print("Parking slot is vacant");
+				if flag!=0:
+					flag=0;
+					payload={'slotid':'A1','status':0,'vechileno':'KL08A3454'}
+					r=requests.post('http://rentmycar16.esy.es/parkingslot.php',params=payload)
+				GPIO.output(27,False);
+				GPIO.output(17,True);
 
 			else:
-				print("Parking slot reserved");
-				payload={'slotid':'A1','status':1,'vechileno':'KL08A3454'}
-				r=requests.post('http://rentmycar16.esy.es/parkingslot.php',params=payload)
-
+				#print("Parking slot reserved");
+				if flag!=1:
+					flag=1;
+					payload={'slotid':'A1','status':1,'vechileno':'KL08A3454'}
+					r=requests.post('http://rentmycar16.esy.es/parkingslot.php',params=payload)
+				GPIO.output(27,True);
+				GPIO.output(17,False);
 			time.sleep(1)
 
 		# Reset by pressing CTRL + C
 	except KeyboardInterrupt:
-		print("Measurement stopped by User")
+		#print("Measurement stopped by User")
 		GPIO.cleanup()

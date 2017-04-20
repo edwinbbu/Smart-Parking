@@ -23,7 +23,7 @@ def init():
 	gpio.setup(m2b,gpio.OUT)
 	gpio.setup(m2e,gpio.OUT)
 
-def forward():
+def forward(t):
 	print "Going forwards"
 	gpio.output(m1a,gpio.HIGH)
 	gpio.output(m1b,gpio.LOW)
@@ -33,9 +33,9 @@ def forward():
 	gpio.output(m2b,gpio.LOW)
 	gpio.output(m2e,gpio.HIGH)
 	
-	sleep(5)
+	sleep(t)
 
-def backward():
+def backward(t):
 	print "Going backwards"
 	gpio.output(m1a,gpio.LOW)
 	gpio.output(m1b,gpio.HIGH)
@@ -44,22 +44,11 @@ def backward():
 	gpio.output(m2a,gpio.LOW)
 	gpio.output(m2b,gpio.HIGH)
 	gpio.output(m2e,gpio.HIGH)
-	sleep(1)
+	sleep(t)
 
 
-def right():
+def right(t):
 	print "Going right"
-	gpio.output(m1a,gpio.LOW)
-	gpio.output(m1b,gpio.HIGH)
-	gpio.output(m1e,gpio.HIGH)
- 
-	gpio.output(m2a,gpio.HIGH)
-	gpio.output(m2b,gpio.LOW)
-	gpio.output(m2e,gpio.HIGH)
-	sleep(1)
-
-def left():
-	print "Going left"
 	gpio.output(m1a,gpio.HIGH)
 	gpio.output(m1b,gpio.LOW)
 	gpio.output(m1e,gpio.HIGH)
@@ -67,7 +56,18 @@ def left():
 	gpio.output(m2a,gpio.LOW)
 	gpio.output(m2b,gpio.HIGH)
 	gpio.output(m2e,gpio.HIGH)
-	sleep(1)
+	sleep(t)
+
+def left(t):
+	print "Going left"
+	gpio.output(m1a,gpio.LOW)
+	gpio.output(m1b,gpio.HIGH)
+	gpio.output(m1e,gpio.HIGH)
+ 
+	gpio.output(m2a,gpio.HIGH)
+	gpio.output(m2b,gpio.LOW)
+	gpio.output(m2e,gpio.HIGH)
+	sleep(t)
 
 def stop():
 	print "Stoping"
@@ -101,15 +101,31 @@ while(True):
 			c=value
 			if c!=a:
 				a=c
-				init()
-				forward()
-				stop()
-				init()
-				left()
-				stop()
-				init()
-				forward()
-				stop()
-				sleep(1)
-				payload={'checker':transid}
-				r=requests.post('http://rentmycar16.esy.es/checker.php',params=payload)
+				for key,value in obj.iteritems():
+					if key=="slotid" and value=="A1":
+						init()
+						forward(6)
+						stop()
+						init()
+						right(3.45)
+						stop()
+						init()
+						forward(3)
+						stop()
+						sleep(1)
+						payload={'checker':transid}
+						r=requests.post('http://rentmycar16.esy.es/checker.php',params=payload)
+				for key,value in obj.iteritems():
+					if key=="slotid" and value=="A2":
+						init()
+						forward(6)
+						stop()
+						init()
+						left(3.45)
+						stop()
+						init()
+						forward(3)
+						stop()
+						sleep(1)
+						payload={'checker':transid}
+						r=requests.post('http://rentmycar16.esy.es/checker.php',params=payload)

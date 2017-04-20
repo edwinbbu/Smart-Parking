@@ -8,12 +8,12 @@ gpio.setup(18, gpio.OUT)
 gpio.setup(22, gpio.OUT)
 
 
-gpio.output(16, gpio.HIGH)
-gpio.output(18, gpio.LOW)
+gpio.output(16, gpio.LOW)
+gpio.output(18, gpio.HIGH)
 gpio.output(22, gpio.HIGH)
 
 
-time.sleep(50)
+time.sleep(5)
 gpio.output(22, gpio.LOW)
 gpio.cleanup()
  

@@ -48,24 +48,24 @@ def backward():
 
 def right():
 	print "Going right"
-	gpio.output(m1a,gpio.LOW)
-	gpio.output(m1b,gpio.HIGH)
-	gpio.output(m1e,gpio.HIGH)
- 
-	gpio.output(m2a,gpio.HIGH)
-	gpio.output(m2b,gpio.LOW)
-	gpio.output(m2e,gpio.HIGH)
-	sleep(1)
-	#gpio.cleanup()
-
-def left():
-	print "Going left"
 	gpio.output(m1a,gpio.HIGH)
 	gpio.output(m1b,gpio.LOW)
 	gpio.output(m1e,gpio.HIGH)
  
 	gpio.output(m2a,gpio.LOW)
 	gpio.output(m2b,gpio.HIGH)
+	gpio.output(m2e,gpio.HIGH)
+	sleep(1)
+	#gpio.cleanup()
+
+def left():
+	print "Going left"
+	gpio.output(m1a,gpio.LOW)
+	gpio.output(m1b,gpio.HIGH)
+	gpio.output(m1e,gpio.HIGH)
+ 
+	gpio.output(m2a,gpio.HIGH)
+	gpio.output(m2b,gpio.LOW)
 	gpio.output(m2e,gpio.HIGH)
 	sleep(1)
 	#gpio.cleanup()
